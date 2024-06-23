@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>List Books</title>
+</head>
+<body>
+<h3>Customers</h3>
+<p>
+    <a th:href="@{/books/create}">
+        Add new customer
+    </a>
+</p>
+<p>
+    <a th:href="@{/categorys}">
+        categorys
+    </a>
+</p>
+<div style="margin-bottom: 10px; margin-left: 110px">
+    <form th:action="@{/books/search}" method="post">
+        <label><input type="text" name="search"></label>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+<div class="notify">
+    <div th:if="${message}">
+        <span th:text="${message}"></span>
+    </div>
+</div>
+
+<table id = "books">
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>Name</th>
+        <th>author</th>
+        <th>price</th>
+        <th>img</th>
+        <th>Category</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c,cStatus : ${books}">
+        <td th:text="${cStatus.count}"></td>
+        <td th:text="${c.getName()}"></td>
+        <td th:text="${c.getAuthor()}"></td>
+        <td th:text="${c.getPrice()}"></td>
+        <td th:text="${c.getImg()}"></td>
+        <td th:text="${c.getCategory().getName()}"></td>
+        <td><a th:href="@{/books/update/{id}(id=${c.getId()})}">update</a></td>
+        <td><a th:href="@{/books/delete/{id}(id=${c.getId()})}">delete</a></td>
+    </tr>
+    </tbody>
+</table>
+<a class="btn btn-primary" th:if="${books.hasPrevious()}"
+   th:href="@{/books/page(page=${books.number - 1})}">Previous</a>
+<span th:text="${books.number + 1}"></span> | <span th:text="${books.totalPages}"></span>
+<a class="btn btn-primary" th:if="${books.hasNext()}"
+   th:href="@{/books/page(page=${books.number + 1})}">Next</a>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
